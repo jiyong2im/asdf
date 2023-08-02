@@ -1,7 +1,8 @@
 package com.example.board1.data.boardDao.lmpl;
 
+import com.example.board1.data.boardDao.BoardDao;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BoardDaoImpl {
+public class BoardDaoImpl extends BoardDao {
 }
