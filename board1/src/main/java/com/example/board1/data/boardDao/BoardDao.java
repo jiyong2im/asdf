@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface BoardDao {
     List<BoardEntity> selectListBoard();
-    void saveBoard();
+    void saveBoard(BoardEntity boardEntity);
 
 }

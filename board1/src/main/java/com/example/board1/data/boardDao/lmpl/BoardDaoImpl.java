@@ -4,6 +4,7 @@ import com.example.board1.data.boardDao.BoardDao;
 import com.example.board1.data.boardEntity.BoardEntity;
 import com.example.board1.data.boardRepository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class BoardDaoImpl implements BoardDao {
     public List<BoardEntity> selectListBoard() {
         return boardRepository.findAll();
     }
-    void saveBoard(BoardEntity boardEntity) {
+    public void saveBoard(BoardEntity boardEntity) {
         boardRepository.save(boardEntity);
     }
 }

@@ -4,6 +4,9 @@ package com.example.board1.controller;
 import com.example.board1.data.boardDto.BoardDto;
 import com.example.board1.data.boardDto.InsertDto;
 import com.example.board1.service.BoardService;
+import com.example.board1.service.Impl.BoardServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,7 @@ import java.util.Objects;
 public class BoardController {
 
     private final BoardService boardService;
+    private final Logger LOGGER = LoggerFactory.getLogger(BoardController.class);
 
     @Autowired
     public BoardController(BoardService boardService){
@@ -31,8 +35,9 @@ public class BoardController {
     }
 
     @PostMapping("/board")
-    public void setList(InsertDto insertDto){
-        boardService.writeService(InsertDto);
+    public void setList(@RequestBody InsertDto insertDto){
+
+        boardService.writeService(insertDto);
 
     }
 

@@ -7,11 +7,11 @@ const BoardWrite = () => {
 
     const [board, setBoard] = useState({
         title: '',
-        name:'',
+        writer:'',
         contents: '',
     });
 
-    const { title, createdBy, contents } = board; //비구조화 할당
+    const { title, writer, contents } = board; //비구조화 할당
 
     const onChange = (event) => {
         const { value, name } = event.target; //event.target에서 name과 value만 가져오기
@@ -22,7 +22,7 @@ const BoardWrite = () => {
     };
 
     const saveBoard = async () => {
-        await axios.post(`/list`, board).then((res) => {
+        await axios.post(`/board`, board).then((res) => {
             alert('등록되었습니다.');
             navigate('/board');
         });
@@ -43,8 +43,8 @@ const BoardWrite = () => {
                 <span>작성자</span>
                 <input
                     type="text"
-                    name="createdBy"
-                    value={createdBy}
+                    name="writer"
+                    value={writer}
                     onChange={onChange}
                 />
             </div>

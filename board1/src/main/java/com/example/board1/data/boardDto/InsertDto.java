@@ -11,6 +11,6 @@ import org.springframework.core.annotation.AliasFor;
 public class InsertDto {
 
     private String title;
-    private String content;
+    private String contents;
     private String writer;
 }
