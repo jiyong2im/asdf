@@ -12,7 +12,7 @@ const BoardDetail = () => {
         setBoard(resp.data);
         setLoading(false);
     };
-
+    //초기에 한번 실행하는 hook
     useEffect(() => {
         getBoard();
     }, []);
