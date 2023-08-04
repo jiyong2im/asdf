@@ -22,21 +22,21 @@ const BoardWrite = () => {
     };
 
     const saveBoard = async () => {
-        await axios.post(`/board`, board).then((res) => {
+        await axios.post(`/list`, board).then((res) => {
             alert('등록되었습니다.');
-            navigate('/board');
+            navigate('/list');
         });
     };
 
     const backToList = () => {
-        navigate('/board');
+        navigate('/list');
     };
 
     return (
         <div>
             <div>
                 <span>제목</span>
-                <input type="text" name="title" value={title} onChange={onChange} />
+                <input type="texwt" name="title" value={title} onChange={onChange} />
             </div>
             <br />
             <div>

@@ -1,6 +1,7 @@
 package com.example.board1.data.boardDao.lmpl;
 
 import com.example.board1.data.boardDao.BoardDao;
+import com.example.board1.data.boardDto.InsertDto;
 import com.example.board1.data.boardEntity.BoardEntity;
 import com.example.board1.data.boardRepository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,28 @@ public class BoardDaoImpl implements BoardDao {
     public List<BoardEntity> selectListBoard() {
         return boardRepository.findAll();
     }
+    public InsertDto selectOneBard(Long number) {
+
+        BoardEntity boardEntity = boardRepository.findById(number).get();
+        boardEntity.setViews(boardEntity.getViews()+1L);
+        boardRepository.save(boardEntity);
+        InsertDto insertDto = new InsertDto();
+        insertDto.setTitle(boardEntity.getTitle());
+        insertDto.setContents(boardEntity.getTitle());
+        insertDto.setWriter(boardEntity.getName());
+
+        return insertDto;
+    }
     public void saveBoard(BoardEntity boardEntity) {
+        boardRepository.save(boardEntity);
+    }
+
+    public void updateBoard(InsertDto insertDto, Long number){
+
+        BoardEntity boardEntity = boardRepository.findById(number).get();
+        boardEntity.setName(insertDto.getWriter());
+        boardEntity.setText(insertDto.getContents());
+        boardEntity.setTitle(insertDto.getTitle());
         boardRepository.save(boardEntity);
     }
 }

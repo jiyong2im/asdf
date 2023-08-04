@@ -33,12 +33,24 @@ public class BoardController {
 //        List<BoardDto> boardList = boardService.selectList(pageNo.intValue());
         return ResponseEntity.ok(boardService.selectList());
     }
+    @GetMapping("/list/{number}")
+    public ResponseEntity<InsertDto> getOneList(@PathVariable("number") Long number) {
+        return ResponseEntity.ok(boardService.selectOneList(number));
+    }
 
-    @PostMapping("/board")
+    @PostMapping("/list")
     public void setList(@RequestBody InsertDto insertDto){
 
         boardService.writeService(insertDto);
 
     }
+
+    @PutMapping("/list/{number}")
+    public void modifyBoard(@RequestBody InsertDto insertDto, @PathVariable("number") Long number){
+
+
+
+    }
+
 
 }

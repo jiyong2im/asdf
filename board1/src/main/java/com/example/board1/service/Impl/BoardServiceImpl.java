@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -28,10 +29,23 @@ public class BoardServiceImpl implements BoardService {
 
     public ArrayList<BoardDto> selectList() {
         List<BoardEntity> boardList= boardDao.selectListBoard();
-        BoardDto dto = new BoardDto();
         ArrayList<BoardDto> boardDtoList = new ArrayList<>();
 
+        List<BoardDto> l = boardList.stream().map(d -> {
+            BoardDto dto = new BoardDto();
+            dto.setName(d.getName());
+            dto.setId(d.getId());
+            dto.setTitle(d.getTitle());
+            dto.setViews(d.getViews());
+            dto.setText(d.getText());
+            dto.setCreatedAt(d.getCreatedAt());
+            dto.setUpdatedAt(d.getUpdatedAt());
+            dto.setNumber(d.getNumber());
+            return dto;
+        }).toList();
+
         for(BoardEntity list :boardList) {
+            BoardDto dto = new BoardDto();
             dto.setName(list.getName());
             dto.setId(list.getId());
             dto.setTitle(list.getTitle());
@@ -43,9 +57,15 @@ public class BoardServiceImpl implements BoardService {
             LOGGER.info("list 값 "+ dto.getNumber());
 
             boardDtoList.add(dto);
+            LOGGER.info("list 값 "+ list.getName());
+
         }
         return boardDtoList;
-
+    }
+    public InsertDto selectOneList(Long number){
+        InsertDto insertDto = new InsertDto();
+        insertDto = boardDao.selectOneBard(number);
+        return insertDto;
     }
 
     public void writeService(InsertDto insertDto) {
@@ -61,4 +81,7 @@ public class BoardServiceImpl implements BoardService {
         boardDao.saveBoard(boardEntity);
     }
 
+    public void updateService(InsertDto insertDto, Long number){
+        boardDao.updateBoard(insertDto, number);
+    }
 }

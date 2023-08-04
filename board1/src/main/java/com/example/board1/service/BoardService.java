@@ -11,6 +11,8 @@ import java.util.Objects;
 
 public interface BoardService {
     ArrayList<BoardDto> selectList();
+    InsertDto selectOneList(Long number);
     void writeService(InsertDto insertDto);
 
+     void updateService(InsertDto insertDto, Long number);
 }
