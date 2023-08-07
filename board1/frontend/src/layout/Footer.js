@@ -4,7 +4,7 @@ const Footer = () => {
     return (
         <footer>
             <hr/>
-            하단
+
         </footer>
     );
 };

@@ -3,6 +3,7 @@ package com.example.board1.controller;
 
 import com.example.board1.data.boardDto.BoardDto;
 import com.example.board1.data.boardDto.InsertDto;
+import com.example.board1.data.boardDto.Option;
 import com.example.board1.service.BoardService;
 import com.example.board1.service.Impl.BoardServiceImpl;
 import org.slf4j.Logger;
@@ -27,11 +28,9 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<List<BoardDto>> getList() {
-//        Long pageNo = num;
-//        List<BoardDto> boardList = boardService.selectList(pageNo.intValue());
-        return ResponseEntity.ok(boardService.selectList());
+    @GetMapping({"/","/list"})
+    public Option getList(@RequestParam( value = "pageNo", defaultValue = "1", required = false)Long pageNo) {
+        return boardService.selectList(pageNo.intValue());
     }
     @GetMapping("/list/{number}")
     public ResponseEntity<InsertDto> getOneList(@PathVariable("number") Long number) {
@@ -45,11 +44,15 @@ public class BoardController {
 
     }
 
-    @PutMapping("/list/{number}")
-    public void modifyBoard(@RequestBody InsertDto insertDto, @PathVariable("number") Long number){
+    @PatchMapping("/list/{number}")
+    public void modifyList(@RequestBody InsertDto insertDto, @PathVariable("number") Long number){
+        boardService.updateService(insertDto, number);
+    }
 
 
-
+    @DeleteMapping("list/{number}")
+    public void deleteOneList(@PathVariable("number") Long number){
+        boardService.deleteService(number);
     }
 
 

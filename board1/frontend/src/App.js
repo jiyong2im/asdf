@@ -13,7 +13,7 @@ function App() {
             <Route path="/list" element={<BoardList />} />
             <Route path="/list/:number" element={<BoardDetail />} />
             <Route path="/write" element={<BoardWrite />} />
-            <Route path="/update/:idx" element={<BoardUpdate />} />
+            <Route path="/update/:number" element={<BoardUpdate />} />
         </Routes>
     );
 }

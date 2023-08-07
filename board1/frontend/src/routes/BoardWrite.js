@@ -21,6 +21,7 @@ const BoardWrite = () => {
         });
     };
 
+    // 기본값 요망 ****
     const saveBoard = async () => {
         await axios.post(`/list`, board).then((res) => {
             alert('등록되었습니다.');

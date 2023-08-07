@@ -5,6 +5,8 @@ import com.example.board1.data.boardDto.InsertDto;
 import com.example.board1.data.boardEntity.BoardEntity;
 import com.example.board1.data.boardRepository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +21,19 @@ public class BoardDaoImpl implements BoardDao {
         this.boardRepository = boardRepository;
     }
 
-    public List<BoardEntity> selectListBoard() {
-        return boardRepository.findAll();
+    public Page<BoardEntity> selectListBoard(int start) {
+        PageRequest request = PageRequest.of((start -1),10, Sort.by(Sort.Order.desc("number")));
+
+        Page<BoardEntity> pageBoard = boardRepository.findAll(request);
+
+
+        return pageBoard;
     }
+    public Long numRecodes(){
+        Long count = boardRepository.count();
+        return count;
+    }
+
     public InsertDto selectOneBard(Long number) {
 
         BoardEntity boardEntity = boardRepository.findById(number).get();
@@ -29,7 +41,7 @@ public class BoardDaoImpl implements BoardDao {
         boardRepository.save(boardEntity);
         InsertDto insertDto = new InsertDto();
         insertDto.setTitle(boardEntity.getTitle());
-        insertDto.setContents(boardEntity.getTitle());
+        insertDto.setContents(boardEntity.getText());
         insertDto.setWriter(boardEntity.getName());
 
         return insertDto;
@@ -45,6 +57,10 @@ public class BoardDaoImpl implements BoardDao {
         boardEntity.setText(insertDto.getContents());
         boardEntity.setTitle(insertDto.getTitle());
         boardRepository.save(boardEntity);
+    }
+
+    public void deleteBoard(Long number) {
+        boardRepository.deleteById(number);
     }
 }
 

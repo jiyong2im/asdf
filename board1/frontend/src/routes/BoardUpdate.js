@@ -4,15 +4,15 @@ import axios from 'axios';
 
 const BoardUpdate = () => {
     const navigate = useNavigate();
-    const { idx } = useParams(); // /update/:idx와 동일한 변수명으로 데이터를 꺼낼 수 있습니다.
+    const { number } = useParams(); // /update/:idx와 동일한 변수명으로 데이터를 꺼낼 수 있습니다.
     const [board, setBoard] = useState({
-        idx: 0,
+        number: 0,
         title: '',
-        createdBy: '',
+        writer: '',
         contents: '',
     });
 
-    const { title, createdBy, contents } = board; //비구조화 할당
+    const { title, writer, contents } = board;
 
     const onChange = (event) => {
         const { value, name } = event.target; //event.target에서 name과 value만 가져오기
@@ -22,24 +22,28 @@ const BoardUpdate = () => {
         });
     };
 
-    const getBoard = async () => {
-        const resp = await (await axios.get(`//localhost:8080/board/${idx}`)).data;
-        setBoard(resp.data);
+    const getData = async () => {
+        axios.get(`/list/${number}`).then((res) =>{
+            setBoard(res.data);
+            console.log(res);
+
+            console.log('성공');
+        });
     };
 
     const updateBoard = async () => {
-        await axios.patch(`//localhost:8080/board`, board).then((res) => {
+        await axios.patch(`/list/${number}`, board).then((res) => {
             alert('수정되었습니다.');
-            navigate('/board/' + idx);
+            navigate('/list/' + number);
         });
     };
 
     const backToDetail = () => {
-        navigate('/board/' + idx);
+        navigate('/list/' + number);
     };
 
     useEffect(() => {
-        getBoard();
+        getData();
     }, []);
 
     return (
@@ -51,7 +55,7 @@ const BoardUpdate = () => {
             <br />
             <div>
                 <span>작성자</span>
-                <input type="text" name="createdBy" value={createdBy} readOnly={true} />
+                <input type="text" name="name" value={writer} readOnly={true} />
             </div>
             <br />
             <div>
