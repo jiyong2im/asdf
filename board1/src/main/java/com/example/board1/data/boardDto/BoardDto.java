@@ -16,8 +16,8 @@ public class BoardDto {
     private String title;
     private String text;
     private Long views;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String createdAt;
+    private String updatedAt;
 
 }
 

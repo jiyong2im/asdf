@@ -45,7 +45,7 @@ const BoardList = () => {
         <div>
                 {boardList && boardList.map((board) => (
                     <ul key={board.number}>
-                        <h3><Link to={`/list/${board.number}`}>{board.number} / {board.title} </Link></h3>
+                        <h3><Link to={`/list/${board.number}`}>N : {board.number} /T : {board.title} /V : {board.views} /U : {board.updatedAt}</Link></h3>
                         <hr />
                     </ul>
                 ))}

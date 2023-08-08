@@ -23,18 +23,17 @@ const BoardUpdate = () => {
     };
 
     const getData = async () => {
-        axios.get(`/list/${number}`).then((res) =>{
+        axios.get(`/list/${number}?views=false`).then((res) =>{
             setBoard(res.data);
             console.log(res);
 
-            console.log('성공');
         });
     };
 
     const updateBoard = async () => {
-        await axios.patch(`/list/${number}`, board).then((res) => {
+        await axios.patch(`/list/${number}?views=false`, board).then((res) => {
             alert('수정되었습니다.');
-            navigate('/list/' + number);
+            navigate('/list');
         });
     };
 

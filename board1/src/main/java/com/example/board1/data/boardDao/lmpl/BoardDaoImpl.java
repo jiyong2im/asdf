@@ -34,15 +34,20 @@ public class BoardDaoImpl implements BoardDao {
         return count;
     }
 
-    public InsertDto selectOneBard(Long number) {
+    public InsertDto selectOneBard(Long number, boolean views) {
 
         BoardEntity boardEntity = boardRepository.findById(number).get();
-        boardEntity.setViews(boardEntity.getViews()+1L);
+        if(views) {
+            boardEntity.setViews(boardEntity.getViews() + 1L);
+        }else{boardEntity.setViews(boardEntity.getViews());}
         boardRepository.save(boardEntity);
         InsertDto insertDto = new InsertDto();
         insertDto.setTitle(boardEntity.getTitle());
         insertDto.setContents(boardEntity.getText());
         insertDto.setWriter(boardEntity.getName());
+        insertDto.setViews(boardEntity.getViews());
+        insertDto.setCreatedAt((boardEntity.getCreatedAt().toString().replace("-", ":")
+                .replace("T","/").substring(0,16)));
 
         return insertDto;
     }

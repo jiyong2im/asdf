@@ -33,8 +33,8 @@ public class BoardController {
         return boardService.selectList(pageNo.intValue());
     }
     @GetMapping("/list/{number}")
-    public ResponseEntity<InsertDto> getOneList(@PathVariable("number") Long number) {
-        return ResponseEntity.ok(boardService.selectOneList(number));
+    public ResponseEntity<InsertDto> getOneList(@PathVariable("number") Long number, @RequestParam(value = "views", required = false) boolean views ) {
+        return ResponseEntity.ok(boardService.selectOneList(number, views));
     }
 
     @PostMapping("/list")

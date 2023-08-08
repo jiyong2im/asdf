@@ -61,19 +61,19 @@ public class BoardServiceImpl implements BoardService {
         Page<BoardEntity> boardList= boardDao.selectListBoard(pageNo);
         ArrayList<BoardDto> boardDtoList = new ArrayList<>();
 
-        List<BoardDto> l = boardList.stream().map(d -> {
-            BoardDto dto = new BoardDto();
-            dto.setName(d.getName());
-            dto.setId(d.getId());
-            dto.setTitle(d.getTitle());
-            dto.setViews(d.getViews());
-            dto.setText(d.getText());
-            dto.setCreatedAt(d.getCreatedAt());
-            dto.setUpdatedAt(d.getUpdatedAt());
-            dto.setNumber(d.getNumber());
-            return dto;
-        }).toList();
-
+//        List<BoardDto> l = boardList.stream().map(d -> {
+//            BoardDto dto = new BoardDto();
+//            dto.setName(d.getName());
+//            dto.setId(d.getId());
+//            dto.setTitle(d.getTitle());
+//            dto.setViews(d.getViews());
+//            dto.setText(d.getText());
+//            dto.setCreatedAt(d.getCreatedAt());
+//            dto.setUpdatedAt(d.getUpdatedAt());
+//            dto.setNumber(d.getNumber());
+//            return dto;
+//        }).toList();
+        String str;
         for(BoardEntity list :boardList) {
             BoardDto dto = new BoardDto();
             dto.setName(list.getName());
@@ -81,15 +81,17 @@ public class BoardServiceImpl implements BoardService {
             dto.setTitle(list.getTitle());
             dto.setViews(list.getViews());
             dto.setText(list.getText());
-            dto.setCreatedAt(list.getCreatedAt());
-            dto.setUpdatedAt(list.getUpdatedAt());
+            str = (list.getCreatedAt().toString().replace("-", ":")
+                    .replace("T","/").substring(5,16));
+            dto.setCreatedAt(str);
+            str = (list.getUpdatedAt().toString().replace("-", ":")
+                    .replace("T","/").substring(5,16));
+            dto.setUpdatedAt(str);
             dto.setNumber(list.getNumber());
-            LOGGER.info("list 값 "+ dto.getNumber());
 
             boardDtoList.add(dto);
-            LOGGER.info("list 값 "+ list.getName());
-
         }
+
         Option option =new Option();
         option.setDto(boardDtoList);
         option.setPgn(pgnList);
@@ -123,9 +125,9 @@ public class BoardServiceImpl implements BoardService {
 
         return pgnList;
     }
-    public InsertDto selectOneList(Long number){
+    public InsertDto selectOneList(Long number, boolean views){
         InsertDto insertDto = new InsertDto();
-        insertDto = boardDao.selectOneBard(number);
+        insertDto = boardDao.selectOneBard(number, views);
         return insertDto;
     }
 

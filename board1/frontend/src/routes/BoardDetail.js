@@ -10,9 +10,7 @@ const BoardDetail = () => {
     const [loading, setLoading] = useState(true);
     const [board, setBoard] = useState({});
     const pi = 1;
-    const { title, writer, contents } = board;
-
-
+    const { title, writer, contents, views, createdAt} = board;
 
     const moveToUpdate = () => {
         navigate('/update/' + number);
@@ -32,7 +30,7 @@ const BoardDetail = () => {
     };
 
     const getData = async () => {
-        axios.get(`/list/${number}`).then((res) =>{
+        axios.get(`/list/${number}?views=true`).then((res) =>{
                 setBoard(res.data);
                 console.log(res);
 
@@ -46,15 +44,17 @@ const BoardDetail = () => {
     }, []);
 
     return (
-
         <div>
-
                 <div>
                     <h4>글번호 : {number}</h4>
                     <hr />
                     <h4>제목 : {title}</h4>
                     <hr />
                     <h5>작성자 : {writer}</h5>
+                    <hr />
+                    <h5>조회수 : {views}</h5>
+                    <hr />
+                    <h5>최초작성 : {createdAt}</h5>
                     <hr />
                     <p>본문 : {contents}</p>
                 </div>

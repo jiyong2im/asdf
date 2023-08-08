@@ -13,4 +13,7 @@ public class InsertDto {
     private String title;
     private String contents;
     private String writer;
+    private Long views;
+    private String createdAt;
+
 }
