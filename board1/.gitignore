@@ -18,7 +18,7 @@ target/
 *.iws
 *.iml
 *.ipr
-application-jiyong.properties
+src/main/resources/application-ji.properties
 
 ### NetBeans ###
 /nbproject/private/
