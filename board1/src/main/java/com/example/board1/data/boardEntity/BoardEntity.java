@@ -2,8 +2,10 @@ package com.example.board1.data.boardEntity;
 
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "board")
@@ -20,6 +22,10 @@ public class BoardEntity extends BaseEntity{
     private String title;
     private String text;
     private Long views;
+//    @ColumnDefault("0")
+    private Long great;
+//    @ColumnDefault("0")
+    private Long hate;
 
 
 

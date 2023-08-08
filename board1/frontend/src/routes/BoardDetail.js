@@ -6,11 +6,12 @@ import boardList from "./BoardList";
 
 const BoardDetail = () => {
     const navigate = useNavigate();
-    const {number } = useParams(); // /board/:idx와 동일한 변수명으로 데이터를 꺼낼 수 있습니다.
+    const {number } = useParams();
     const [loading, setLoading] = useState(true);
     const [board, setBoard] = useState({});
     const pi = 1;
-    const { title, writer, contents, views, createdAt} = board;
+    const [checked, setChecked] = useState();
+    const { title, writer, contents, views, createdAt, great, hate } = board;
 
     const moveToUpdate = () => {
         navigate('/update/' + number);
@@ -20,10 +21,27 @@ const BoardDetail = () => {
         if (window.confirm('게시글을 삭제하시겠습니까?')) {
             await axios.delete(`/list/${number}`).then((res) => {
                 alert('삭제되었습니다.');
+
                 navigate('/list');
             });
         }
     };
+    //useState() 를 먼저 적어 놨는데 안바뀐 상태로 api 요청하는지 모르겠다.
+    const moveToGreat = async () => {
+        await setChecked(1);
+        axios.get(`/list/like/${number}?checked=`+checked).then((res) =>{
+            setBoard(res.data);
+        });
+    };
+
+    const moveToHate = async () => {
+        await setChecked(2);
+        //${}리터럴 된 값 // 쓸 때 업데이트 됨
+        axios.get(`/list/like/${number}?checked=${checked}`).then((res) =>{
+            setBoard(res.data);
+        });
+    };
+
 
     const moveToList = () => {
         navigate('/list');
@@ -31,10 +49,9 @@ const BoardDetail = () => {
 
     const getData = async () => {
         axios.get(`/list/${number}?views=true`).then((res) =>{
-                setBoard(res.data);
-                console.log(res);
-
-                console.log('성공');
+            setBoard(res.data);
+            console.log(res);
+            console.log('성공');
             });
     };
     //초기에 한번 실행하는 hook
@@ -58,6 +75,8 @@ const BoardDetail = () => {
                     <hr />
                     <p>본문 : {contents}</p>
                 </div>
+            <button onClick={moveToGreat}>👍🏼{great}</button>&nbsp;&nbsp;&nbsp;&nbsp;<button onClick={moveToHate}>👎🏾 {hate}</button>
+
             <div>
                 <button onClick={moveToUpdate}>수정</button>
                 <button onClick={deleteBoard}>삭제</button>

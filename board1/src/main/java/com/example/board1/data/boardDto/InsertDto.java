@@ -15,5 +15,6 @@ public class InsertDto {
     private String writer;
     private Long views;
     private String createdAt;
-
+    private Long great;
+    private Long hate;
 }

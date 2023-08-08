@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public interface BoardService {
     Option selectList(int pageNo);
-    InsertDto selectOneList(Long number, boolean views);
+    InsertDto selectOneList(Long number, boolean views, int checked);
     void writeService(InsertDto insertDto);
 
      void updateService(InsertDto insertDto, Long number);

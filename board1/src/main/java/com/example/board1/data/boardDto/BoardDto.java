@@ -18,6 +18,8 @@ public class BoardDto {
     private Long views;
     private String createdAt;
     private String updatedAt;
+    private Long great;
+    private Long hate;
 
 }
 

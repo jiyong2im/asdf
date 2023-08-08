@@ -125,9 +125,9 @@ public class BoardServiceImpl implements BoardService {
 
         return pgnList;
     }
-    public InsertDto selectOneList(Long number, boolean views){
-        InsertDto insertDto = new InsertDto();
-        insertDto = boardDao.selectOneBard(number, views);
+    public InsertDto selectOneList(Long number, boolean views, int checked){
+        InsertDto insertDto;
+        insertDto = boardDao.selectOneBard(number, views, checked);
         return insertDto;
     }
 
@@ -137,6 +137,8 @@ public class BoardServiceImpl implements BoardService {
         boardEntity.setName(insertDto.getWriter());
         boardEntity.setText(insertDto.getContents());
         boardEntity.setTitle(insertDto.getTitle());
+        boardEntity.setGreat(0L);
+        boardEntity.setHate(0L);
         boardEntity.setViews(0L);
         LOGGER.info("이것은 작성자입니다" + insertDto.getWriter());
         LOGGER.info("이것은 컨텐츠" + insertDto.getContents());

@@ -34,11 +34,18 @@ public class BoardController {
     }
     @GetMapping("/list/{number}")
     public ResponseEntity<InsertDto> getOneList(@PathVariable("number") Long number, @RequestParam(value = "views", required = false) boolean views ) {
-        return ResponseEntity.ok(boardService.selectOneList(number, views));
+        int checked = 0;
+        return ResponseEntity.ok(boardService.selectOneList(number, views, checked));
     }
 
+    @GetMapping("/list/like/{number}")
+    public ResponseEntity<InsertDto> getOneListLike(@PathVariable("number") Long number, @RequestParam(value = "checked", required = false) int checked ) {
+        boolean views = false;
+        return ResponseEntity.ok(boardService.selectOneList(number, views, checked));
+    }
     @PostMapping("/list")
     public void setList(@RequestBody InsertDto insertDto){
+        LOGGER.info("이것은 컨트롤러 요청 ");
 
         boardService.writeService(insertDto);
 

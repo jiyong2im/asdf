@@ -12,6 +12,6 @@ public interface BoardDao {
     Long numRecodes();
     void saveBoard(BoardEntity boardEntity);
     void updateBoard(InsertDto insertDto, Long number);
-    InsertDto selectOneBard(Long number, boolean views);
+    InsertDto selectOneBard(Long number, boolean views, int checked);
     void deleteBoard(Long number);
 }
