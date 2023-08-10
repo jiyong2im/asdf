@@ -1,11 +1,12 @@
 package com.example.board1.data.boardEntity;
 
 
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "board")

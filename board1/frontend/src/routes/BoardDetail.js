@@ -11,6 +11,9 @@ const BoardDetail = () => {
     const [board, setBoard] = useState({});
     const pi = 1;
     const [checked, setChecked] = useState();
+    const checkedGreat = 1;
+    const checkedHate = 2;
+
     const { title, writer, contents, views, createdAt, great, hate } = board;
 
     const moveToUpdate = () => {
@@ -29,7 +32,7 @@ const BoardDetail = () => {
     //useState() 를 먼저 적어 놨는데 안바뀐 상태로 api 요청하는지 모르겠다.
     const moveToGreat = async () => {
         await setChecked(1);
-        axios.get(`/list/like/${number}?checked=`+checked).then((res) =>{
+        axios.get(`/list/like/${number}?checked=${checkedGreat}`).then((res) =>{
             setBoard(res.data);
         });
     };
@@ -37,7 +40,7 @@ const BoardDetail = () => {
     const moveToHate = async () => {
         await setChecked(2);
         //${}리터럴 된 값 // 쓸 때 업데이트 됨
-        axios.get(`/list/like/${number}?checked=${checked}`).then((res) =>{
+        axios.get(`/list/like/${number}?checked=${checkedHate}`).then((res) =>{
             setBoard(res.data);
         });
     };

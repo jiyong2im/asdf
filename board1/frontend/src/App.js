@@ -5,6 +5,9 @@ import React from 'react';
 import BoardDetail from './routes/BoardDetail';
 import BoardWrite from './routes/BoardWrite';
 import BoardUpdate from "./routes/BoardUpdate";
+import Login from "./routes/Login";
+import Signup from "./routes/Signup";
+
 
 function App() {
     return (
@@ -13,6 +16,8 @@ function App() {
             <Route path="/list" element={<BoardList />} />
             <Route path="/list/:number" element={<BoardDetail />} />
             <Route path="/write" element={<BoardWrite />} />
+            <Route path="/login" element={<Login/>} />
+            <Route path="/signup" element={<Signup/>} />
             <Route path="/update/:number" element={<BoardUpdate />} />
         </Routes>
     );

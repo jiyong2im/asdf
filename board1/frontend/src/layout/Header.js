@@ -11,9 +11,9 @@ const Header = () => {
             &nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <Link to="/list">로그인</Link>
+            <Link to="/login">로그인</Link>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <Link to="/list">회원가입</Link>
+            <Link to="/signup">회원가입</Link>
             <hr/>
         </header>
     );

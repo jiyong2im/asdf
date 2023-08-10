@@ -1,7 +1,6 @@
 package com.example.board1.data.boardDto;
 
 import lombok.*;
-import org.springframework.web.service.annotation.GetExchange;
 
 @Getter
 @Setter
