@@ -3,26 +3,34 @@ package com.example.board1.controller;
 
 import com.example.board1.data.boardDto.InsertDto;
 import com.example.board1.data.boardDto.Option;
+import com.example.board1.data.boardDto.UserDto;
 import com.example.board1.data.boardEntity.User;
 import com.example.board1.service.BoardService;
+import com.example.board1.service.Impl.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RequestMapping("/")
 @RestController
 public class BoardController {
 
     private final BoardService boardService;
+    private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final Logger LOGGER = LoggerFactory.getLogger(BoardController.class);
 
     @Autowired
-    public BoardController(BoardService boardService, BCryptPasswordEncoder bCryptPasswordEncoder){
+    public BoardController(BoardService boardService, BCryptPasswordEncoder bCryptPasswordEncoder, UserService userService){
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userService = userService;
         this.boardService = boardService;
     }
 
@@ -31,17 +39,25 @@ public class BoardController {
         return boardService.selectList(pageNo.intValue());
     }
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public void login(User user){
-        String id = user.getUid();
-        String pswd = user.getPassword();
-
+        LOGGER.info("이것 login 요청"+ user.getUid());
     }
     @PostMapping("/signup")
-    public void signup(User user){
-        String rawPassword = user.getPassword();
+    public void signup(@RequestBody UserDto userdto, BindingResult bindingResult){
+        LOGGER.info("이것 login 요청"+ userdto.getUid());
+        //아직...
+
+        if(bindingResult.hasErrors()){
+
+        }
+        String rawPassword = userdto.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
-        user.setPassword(encPassword);
+        userdto.setPassword(encPassword);
+        LOGGER.info("이것 signup 요청 ");
+
+        userService.saveUser(userdto);
+
         //save
     }
 
@@ -58,10 +74,8 @@ public class BoardController {
     }
     @PostMapping("/list")
     public void setList(@RequestBody InsertDto insertDto){
-        LOGGER.info("이것은 컨트롤러 요청 ");
 
         boardService.writeService(insertDto);
-
     }
 
     @PatchMapping("/list/{number}")

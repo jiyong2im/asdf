@@ -1,48 +1,54 @@
 import React, { useState } from 'react';
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: '',
-    id: '',
+    name: '',
+    uid: '',
     password: '',
   });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData({
+      ...formData,
       [name]: value,
-    }));
+    });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log('Form submitted:', formData);
+  const handleSubmit = async () => {
+    await axios.post(`/signup`, formData).then((res) => {
+      alert('등록되었습니다.');
+      navigate('/list');
+    });
+    // event.preventDefault();
+    // console.log('Form submitted:', formData);
     // 여기서 서버로 데이터를 보내거나 다른 처리를 할 수 있습니다.
   };
 
   return (
     <div className="signup-form">
       <h2>회원가입</h2>
-      <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="email">&nbsp;&nbsp;&nbsp;아이디 : </label>
+          <label htmlFor="uid">&nbsp;&nbsp;&nbsp;아이디 : </label>
           <input
-              type="id"
-              id="id"
-              name="id"
-              value={formData.id}
+              type="uid"
+              id="uid"
+              name="uid"
+              value={formData.uid}
               onChange={handleChange}
               required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="username">사용자명 : </label>
+          <label htmlFor="name">사용자명 : </label>
           <input
             type="text"
-            id="username"
-            name="username"
-            value={formData.username}
+            id="name"
+            name="name"
+            value={formData.name}
             onChange={handleChange}
             required
           />
@@ -59,8 +65,7 @@ function Signup() {
             required
           />
         </div>
-        <button type="submit">가입하기</button>
-      </form>
+        <button onClick={handleSubmit}>가입하기</button>
     </div>
   );
 }

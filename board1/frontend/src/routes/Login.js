@@ -4,37 +4,46 @@ import axios from "axios";
 
 function Login() {
     const navigate = useNavigate();
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+
+    const [login, setLogin] = useState({
+        uid: '',
+        password:'',
+    });
+
+
 
     const handleUsernameChange = (event) => {
-        setUsername(event.target.value);
+        const { name, value } = event.target;
+        setLogin({
+            ...login,
+            [name]: value,
+        });
     };
+    //
+    //
+    // const handlePasswordChange = (event) => {
+    //     setPassword(event.target.value);
+    // };
 
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    };
 
-    const handleSubmit = (event) => {
-        const saveBoard = async () => {
-            await axios.post(`/login`, event).then((res) => {
-                alert('로그인이 완료 되었습니다.');
-                navigate('/list');
-            });
-        };
+    const handleSubmit = async () => {
+        await axios.post(`/login`, login).then((res) => {
+            console.log('Form submitted:', login);
+            alert('로그인이 완료 되었습니다.');
 
-        event.preventDefault();
-        console.log('Submitted:', { username, password });
+            // navigate('/list');
+        });
     };
 
     return (
         <div className="App">
-            <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Username</label>
                     <input
                         type="text"
-                        value={username}
+                        id="uid"
+                        name="uid"
+                        value={login.uid}
                         onChange={handleUsernameChange}
                         required
                     />
@@ -43,15 +52,16 @@ function Login() {
                     <label>Password</label>
                     <input
                         type="password"
-                        value={password}
-                        onChange={handlePasswordChange}
+                        id="password"
+                        name="password"
+                        value={login.password}
+                        onChange={handleUsernameChange}
                         required
                     />
                 </div>
-                <button type="submit">Log In</button>
-            </form>
+                <button onClick={handleSubmit}>Log In</button>
         </div>
-    );
-}
+    )
 
+    }
 export default Login;

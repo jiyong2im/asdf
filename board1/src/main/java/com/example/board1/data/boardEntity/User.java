@@ -1,6 +1,8 @@
 package com.example.board1.data.boardEntity;
 
 
+import com.example.board1.data.Role;
+import com.example.board1.data.boardDto.UserDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +10,8 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,12 +19,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Entity
 @Table(name = "user")
 
 @Getter
 @Setter
-public class User extends BaseEntity implements UserDetails {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,69 +34,22 @@ public class User extends BaseEntity implements UserDetails {
     @Column(nullable = false, unique = true)
     private String uid;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(nullable = false)
+    @Column
+    private String Name;
+
+    @Column
     private String password;
 
-    @Column(nullable = false)
-    private String name;
+    private Role role;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles =new ArrayList<>();
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    public static User createUser(UserDto userDto){
+        User user = new User();
+        user.setName(userDto.getName());
+        user.setUid(userDto.getUid());
+        user.setPassword(userDto.getPassword());
+        user.setRole(Role.USER);
+        return  user;
     }
-    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-    @Override
-    public String getUsername() {
-        return this.uid;
-    }
-    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-
-    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-
-//
-//    @Column(nullable = false, unique = true)
-//    private String Id;
-//
-//    @Column(nullable = false)
-//    private String Name;
-//
-//    @Column(nullable = false)
-//    private String password;
 
 //
 //    @OneToMany(mappedBy = BaseEntity)

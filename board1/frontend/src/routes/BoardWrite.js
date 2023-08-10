@@ -14,7 +14,7 @@ const BoardWrite = () => {
     const { title, writer, contents } = board; //비구조화 할당
 
     const onChange = (event) => {
-        const { value, name } = event.target; //event.target에서 name과 value만 가져오기
+        const { value, name } = event.target;
         setBoard({
             ...board,
             [name]: value,
