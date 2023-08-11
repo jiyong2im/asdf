@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -35,14 +37,21 @@ public class BoardController {
     }
 
     @GetMapping({"/","/list"})
-    public Option getList(@RequestParam( value = "pageNo", defaultValue = "1", required = false)Long pageNo) {
+    public Option getList(@RequestParam( value = "pageNo", defaultValue = "1", required = false)Long pageNo,
+                          @AuthenticationPrincipal UserDetails userDetails
+                          ) {
+        LOGGER.info("이것 login 요청, {}", userDetails);
         return boardService.selectList(pageNo.intValue());
     }
 
     @GetMapping("/login")
-    public void login(User user){
-        LOGGER.info("이것 login 요청"+ user.getUid());
+    public void login( User user){
     }
+
+    @GetMapping("/logout")
+    public void logout() {
+    }
+
     @PostMapping("/signup")
     public void signup(@RequestBody UserDto userdto, BindingResult bindingResult){
         LOGGER.info("이것 login 요청"+ userdto.getUid());

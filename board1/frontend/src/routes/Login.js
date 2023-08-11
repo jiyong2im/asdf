@@ -27,11 +27,13 @@ function Login() {
 
 
     const handleSubmit = async () => {
-        await axios.post(`/login`, login).then((res) => {
-            console.log('Form submitted:', login);
-            alert('로그인이 완료 되었습니다.');
+        let form = new FormData();
+        form.append("username", login.username);
+        form.append("password",login.password);
 
-            // navigate('/list');
+        await axios.post(`/login`, form).then((res) => {
+            console.log('Form submitted:', form);
+            alert('로그인이 완료 되었습니다.');
         });
     };
 
@@ -42,8 +44,8 @@ function Login() {
                     <input
                         type="text"
                         id="uid"
-                        name="uid"
-                        value={login.uid}
+                        name="username"
+                        value={login.username}
                         onChange={handleUsernameChange}
                         required
                     />

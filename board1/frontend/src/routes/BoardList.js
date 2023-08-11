@@ -22,7 +22,6 @@ const BoardList = () => {
         getData();
     }, []);
 
-
     const moveToWrite = () => {
         navigate('/write');
     };

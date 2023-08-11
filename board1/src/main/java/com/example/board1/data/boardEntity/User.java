@@ -35,7 +35,7 @@ public class User extends BaseEntity {
     private String uid;
 
     @Column
-    private String Name;
+    private String name;
 
     @Column
     private String password;

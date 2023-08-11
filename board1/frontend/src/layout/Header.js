@@ -8,12 +8,14 @@ const Header = () => {
             &nbsp;&nbsp; | &nbsp;&nbsp;
             <Link to="/list">게시판</Link>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Link to="/login">로그인</Link>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Link to="/signup">회원가입</Link>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+            <input type="text" placeholder="검색" />
+
             <hr/>
         </header>
     );
