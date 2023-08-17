@@ -7,6 +7,7 @@ import BoardWrite from './routes/BoardWrite';
 import BoardUpdate from "./routes/BoardUpdate";
 import Login from "./routes/Login";
 import Signup from "./routes/Signup";
+import Search from "./routes/Search";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Route path="/write" element={<BoardWrite />} />
             <Route path="/login" element={<Login/>} />
             <Route path="/signup" element={<Signup/>} />
+            <Route path="/search/:word" element={<Search/>} />
             <Route path="/update/:number" element={<BoardUpdate />} />
         </Routes>
     );

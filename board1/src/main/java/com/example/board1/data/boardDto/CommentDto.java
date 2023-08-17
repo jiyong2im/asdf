@@ -5,14 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Option {
+public class CommentDto {
 
-    private ArrayList<?> dto;
-    private ArrayList<Pagination> pgn;
+    private String username;
+    private String content;
+    private Long number;
 }

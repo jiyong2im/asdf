@@ -1,21 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import "../components/BoardList.css"
-import { Link, useNavigate } from 'react-router-dom';
+
+import {Link, useNavigate, useParams} from 'react-router-dom';
 
 const BoardList = () => {
     const navigate = useNavigate();
     const [boardList, setBoardList] = useState([]);
     const [boardPgn, setBoardPgn] = useState([]);
+    const {word} = useParams();
     const [pageNumber, setPageNumber] = useState();
     const [userInfo, setUserInfo] = useState({});
 
     const getData = async (pgn= 1) => {
-        axios.get(`/list?pageNo=` + pgn)
+        console.log('여기선 어떤 값이', word )
+        axios.get(`/search?word=` + word)
             .then((res) =>{
-                setBoardList(res.data.dto);
-                setBoardPgn(res.data.pgn);
-                setPageNumber(pgn);
+                setBoardList(res.data);
             });
     };
 
@@ -23,7 +23,7 @@ const BoardList = () => {
         getData();
         check();
 
-    }, []);
+    }, [word]);// 여기 바낄 떄마다
 
     const moveToWrite = () => {
         if(userInfo.username != null){
@@ -34,7 +34,6 @@ const BoardList = () => {
             alert('로그인이 필요합니다.');
             navigate('/login');
         }
-
     };
     const check = async () =>{
         await axios.get(`/checkedLogin`).then((res) =>{
@@ -60,12 +59,12 @@ const BoardList = () => {
 
     return (
         <div>
-                {boardList && boardList.map((board) => (
-                    <ul key={board.number}>
-                        <h3><Link to={`/list/${board.number}`}>N : {board.number} /T : {board.title} /V : {board.views} /U : {board.updatedAt}</Link></h3>
-                        <hr />
-                    </ul>
-                ))}
+            {boardList && boardList.map((board) => (
+                <ul key={board.number}>
+                    <h3><Link to={`/list/${board.number}`}>N : {board.number} /T : {board.title} /V : {board.views} /U : {board.updatedAt}</Link></h3>
+                    <hr />
+                </ul>
+            ))}
             <div>
                 <button onClick={moveToWrite}>글쓰기</button>
             </div>

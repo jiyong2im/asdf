@@ -1,21 +1,15 @@
-package com.example.board1.service.Impl;
+package com.example.board1.service;
 
-import com.example.board1.controller.BoardController;
-import com.example.board1.data.boardDao.BoardDao;
 import com.example.board1.data.boardDto.UserDto;
 import com.example.board1.data.boardEntity.User;
 import com.example.board1.data.boardRepository.UserRepository;
-import com.example.board1.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 

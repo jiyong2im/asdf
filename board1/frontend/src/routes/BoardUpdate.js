@@ -54,7 +54,7 @@ const BoardUpdate = () => {
             <br />
             <div>
                 <span>작성자</span>
-                <input type="text" name="name" value={writer} readOnly={true} />
+                <input type="text" name="writer" value={writer} readOnly={true} />
             </div>
             <br />
             <div>

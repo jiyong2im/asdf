@@ -33,14 +33,16 @@ function Login() {
 
         await axios.post(`/login`, form).then((res) => {
             console.log('Form submitted:', form);
+            window.location.href='/home'
             alert('로그인이 완료 되었습니다.');
+
         });
     };
 
     return (
         <div className="App">
                 <div className="form-group">
-                    <label>Username</label>
+                    <label>아이디</label>
                     <input
                         type="text"
                         id="uid"
@@ -51,7 +53,7 @@ function Login() {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Password</label>
+                    <label>비밀번호</label>
                     <input
                         type="password"
                         id="password"
@@ -61,7 +63,7 @@ function Login() {
                         required
                     />
                 </div>
-                <button onClick={handleSubmit}>Log In</button>
+                <button onClick={handleSubmit}>로그인</button>
         </div>
     )
 

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 
 const BoardWrite = () => {
     const navigate = useNavigate();
+
 
     const [board, setBoard] = useState({
         title: '',
@@ -11,7 +12,11 @@ const BoardWrite = () => {
         contents: '',
     });
 
+    const [userInfo, setUserInfo] = useState({});
+
+
     const { title, writer, contents } = board; //비구조화 할당
+
 
     const onChange = (event) => {
         const { value, name } = event.target;
@@ -32,6 +37,37 @@ const BoardWrite = () => {
         navigate('/list');
     };
 
+    const getInfo = async () => {
+        await axios.get(`/checkedLogin`).then((res) =>{
+            setUserInfo(res.data);
+            console.log(res);
+            console.log('성공');
+
+            // let dd = userInfo.username
+            // onChange(dd)
+        });
+    };
+    const change = () => {
+        const {value, writer} = userInfo.username;
+        setBoard({
+            ...board,
+            [writer]: value,
+        })
+    };
+    useEffect(() => {
+        getInfo();
+    }, []);
+
+
+    useEffect(() => {
+        if (userInfo.username) {
+            setBoard((prevBoard) => ({
+                ...prevBoard,
+                writer: userInfo.username,
+            }));
+        }
+    }, [userInfo]);
+
     return (
         <div>
             <div>
@@ -45,8 +81,10 @@ const BoardWrite = () => {
                     type="text"
                     name="writer"
                     value={writer}
-                    onChange={onChange}
+                    readOnly={true}
+                    onInput={onChange}
                 />
+
             </div>
             <br />
             <div>

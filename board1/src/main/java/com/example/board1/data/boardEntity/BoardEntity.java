@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "board")
@@ -27,7 +28,6 @@ public class BoardEntity extends BaseEntity{
     private Long great;
 //    @ColumnDefault("0")
     private Long hate;
-
 
 
 }
