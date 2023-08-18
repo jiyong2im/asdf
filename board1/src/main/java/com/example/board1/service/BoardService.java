@@ -31,10 +31,10 @@ public class BoardService {
 
 
 
-    public Option selectList(int pageNo) {
+    public Option selectListService(int pageNo) {
         Long numRecords = boardDao.numRecodes();
 
-        Page<BoardEntity> boardList= boardDao.selectListBoard(pageNo);
+        Page<BoardEntity> boardList= boardDao.selectBoardList(pageNo);
 
         ArrayList<Pagination> pgnList  = pagination(numRecords, pageNo);
 
@@ -67,7 +67,7 @@ public class BoardService {
         SearchEntity searchEntity = new SearchEntity();
         searchEntity.setKeyword(searchDto.getKeyword());
         searchEntity.setUserId(searchDto.getUserName());
-        boardDao.searchBoard(searchEntity);
+        boardDao.saveSearch(searchEntity);
     }
     public ArrayList<BoardDto> selectSearchList(String word) {
         ArrayList<BoardEntity> boardList = boardDao.searchList(word);
@@ -125,8 +125,8 @@ public class BoardService {
         boardDao.deleteCommentBoard(number);
     }
 
-    public Option commentGetService(Long number, int pageNo){
-        Page<CommentEntity> commentEntities = boardDao.commentGetDao(number, pageNo);
+    public Option commentRequestService(Long number, int pageNo){
+        Page<CommentEntity> commentEntities = boardDao.commentRequestDao(number, pageNo);
 
         ArrayList<CommentDto> commentDtos = new ArrayList<>();
 
@@ -177,7 +177,7 @@ public class BoardService {
 
     }
     public void commentSaveService(CommentDto commentDto){
-        boardDao.commentDao(commentDto);
+        boardDao.commentSaveDao(commentDto);
     }
 }
 

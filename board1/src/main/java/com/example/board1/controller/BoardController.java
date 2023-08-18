@@ -48,7 +48,7 @@ public class BoardController {
 
     @GetMapping("/comment")
     public Option requestComment(@RequestParam(value = "number", required = false) Long number,@RequestParam(value = "pageNo", defaultValue = "1", required = false) Long pageNo){
-        return boardService.commentGetService(number, pageNo.intValue());
+        return boardService.commentRequestService(number, pageNo.intValue());
     }
     @DeleteMapping("comment")
     public void deleteComment(@RequestParam Long number){
@@ -97,7 +97,7 @@ public class BoardController {
                           @AuthenticationPrincipal UserDetails userDetails
     ) {
         LOGGER.info("이것 login 요청, {}", userDetails);
-        return boardService.selectList(pageNo.intValue());
+        return boardService.selectListService(pageNo.intValue());
     }
 
 

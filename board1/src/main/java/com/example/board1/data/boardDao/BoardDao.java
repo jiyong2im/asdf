@@ -34,10 +34,10 @@ public class BoardDao {
         this.likeRepository = likeRepository;
         this.userRepository = userRepository;
     }
-    public void searchBoard(SearchEntity searchEntity){
+    public void saveSearch(SearchEntity searchEntity){
         searchRepository.save(searchEntity);
     }
-    public Page<BoardEntity> selectListBoard(int start) {
+    public Page<BoardEntity> selectBoardList(int start) {
         PageRequest request = PageRequest.of((start -1),7, Sort.by(Sort.Order.desc("number")));
 
         Page<BoardEntity> pageBoard = boardRepository.findAll(request);
@@ -61,7 +61,7 @@ public class BoardDao {
         Long count = boardRepository.findSearchCount(word);
         return count;
     }
-    public Page<CommentEntity> commentGetDao(Long number, int start) {
+    public Page<CommentEntity> commentRequestDao(Long number, int start) {
         PageRequest request = PageRequest.of((start -1),7, Sort.by(Sort.Order.desc("number")));
 
         Page<CommentEntity> pageBoard = commentRepository.findAllByBoardEntity(boardRepository.findById(number).get(), request);
@@ -69,7 +69,7 @@ public class BoardDao {
         return commentRepository.findAllByBoardEntity(boardRepository.findById(number).get(), request);
 
     }
-    public void commentDao(CommentDto commentDto){
+    public void commentSaveDao(CommentDto commentDto){
         CommentEntity comment = new CommentEntity();
         BoardEntity boardEntity = boardRepository.findById(commentDto.getNumber()).get();
         comment.setBoardEntity(boardEntity);
