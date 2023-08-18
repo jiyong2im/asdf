@@ -26,13 +26,13 @@ const BoardList = () => {
     }, []);
 
     const moveToWrite = () => {
-        if(userInfo.username != null){
-            console.log('username : notnull');
-            navigate('/write');
-        }else {
+        if(Object.is(userInfo.username, undefined)){
             console.log('username : null');
             alert('로그인이 필요합니다.');
             navigate('/login');
+        }else {
+            console.log('username : notnull');
+            navigate('/write');
         }
 
     };
@@ -60,12 +60,23 @@ const BoardList = () => {
 
     return (
         <div>
-                {boardList && boardList.map((board) => (
-                    <ul key={board.number}>
-                        <h3><Link to={`/list/${board.number}`}>N : {board.number} /T : {board.title} /V : {board.views} /U : {board.updatedAt}</Link></h3>
-                        <hr />
-                    </ul>
-                ))}
+                <table border="1">
+                    <th className={"num"}>번호</th>
+                    <th className={"title"}>제목</th>
+                    <th className={"writer"}>작성자</th>
+                    <th className={"writer"}>조회수</th>
+                    <th className={"regtime"}>업데이트</th>
+
+                        {boardList && boardList.map((board) => (
+                            <tr>
+                                <td >{board.number}</td>
+                                <td ><h3><Link to={`/list/${board.number}`}>{board.title}</Link></h3></td>
+                                <td>{board.id}</td>
+                                <td>{board.views}</td>
+                                <td>{board.updatedAt}</td>
+                            </tr>
+                        ))}
+                </table>
             <div>
                 <button onClick={moveToWrite}>글쓰기</button>
             </div>

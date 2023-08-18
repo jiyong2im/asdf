@@ -1,4 +1,11 @@
 .button {
-    background-color: blue;
-    color: red;
+    background-color: #888888;
+    color: black;
 }
+ table     { width:680px; text-align:center; }
+th        { background-color:#aaaaaa; }
+
+.num      { width: 80px; }
+.title    { width:230px; }
+.writer   { width:100px; }
+.regtime  { width:180px; }

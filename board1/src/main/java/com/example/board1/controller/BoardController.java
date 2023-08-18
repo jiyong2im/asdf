@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class BoardController {
 
     //검색 하기, 유저 검색어 저장
     @GetMapping("/search")
-    public ArrayList<BoardDto> getSearch(@RequestParam(value = "word", required = false) String word, @AuthenticationPrincipal UserDetails userDetails) {
+    public ArrayList<BoardDto> requestSearch(@RequestParam(value = "word", required = false) String word, @AuthenticationPrincipal UserDetails userDetails) {
         try {
                 SearchDto searchDto = new SearchDto(word, userDetails.getUsername());
                 boardService.searchService(searchDto);
@@ -46,19 +47,25 @@ public class BoardController {
     }
 
     @GetMapping("/comment")
-    public Option getComment(@RequestParam(value = "number", required = false) Long number,@RequestParam(value = "pageNo", defaultValue = "1", required = false) Long pageNo){
+    public Option requestComment(@RequestParam(value = "number", required = false) Long number,@RequestParam(value = "pageNo", defaultValue = "1", required = false) Long pageNo){
         return boardService.commentGetService(number, pageNo.intValue());
     }
-    @PostMapping("/comment")
-    public void setComment(@RequestBody CommentDto commentDto) {
-        LOGGER.info("컨트롤러 댓글 ,{}",commentDto.getContent());
-        boardService.commentSaveService(commentDto);
-
-
+    @DeleteMapping("comment")
+    public void deleteComment(@RequestParam Long number){
+        boardService.deleteCommentService(number);
     }
 
+    @PostMapping("/comment")
+    public void responseComment(@RequestBody CommentDto commentDto) {
+        LOGGER.info("컨트롤러 댓글 ,{}",commentDto.getContent());
+        boardService.commentSaveService(commentDto);
+    }
+
+    @GetMapping("/logout")
+    public void logout() {
+    }
     @GetMapping("/login")
-    public void login( User user){
+    public void login( User user) throws UsernameNotFoundException{
     }
 
     @GetMapping("checkedLogin")
@@ -66,9 +73,6 @@ public class BoardController {
         return userDetails;
     }
 
-    @GetMapping("/logout")
-    public void logout() {
-    }
 
     @PostMapping("/signup")
     public void signup(@RequestBody UserDto userdto, BindingResult bindingResult){
@@ -89,7 +93,7 @@ public class BoardController {
     }
 
     @GetMapping({"/", "/list"})
-    public Option getList(@RequestParam(value = "pageNo", defaultValue = "1", required = false) Long pageNo,
+    public Option requestList(@RequestParam(value = "pageNo", defaultValue = "1", required = false) Long pageNo,
                           @AuthenticationPrincipal UserDetails userDetails
     ) {
         LOGGER.info("이것 login 요청, {}", userDetails);
@@ -98,15 +102,15 @@ public class BoardController {
 
 
     @GetMapping("/list/{number}")
-    public ResponseEntity<InsertDto> getOneList(@PathVariable("number") Long number, @RequestParam(value = "views", required = false) boolean views ) {
+    public ResponseEntity<InsertDto> requestOneList(@PathVariable("number") Long number, @RequestParam(value = "views", required = false) boolean views, @RequestParam(value = "username", required = false) String username ) {
         int checked = 0;
-        return ResponseEntity.ok(boardService.selectOneList(number, views, checked));
+        return ResponseEntity.ok(boardService.selectOneList(number, views, checked, username));
     }
 
     @GetMapping("/list/like/{number}")
-    public ResponseEntity<InsertDto> getOneListLike(@PathVariable("number") Long number, @RequestParam(value = "checked", required = false) int checked ) {
+    public ResponseEntity<InsertDto> requestBoardLike(@PathVariable("number") Long number, @RequestParam(value = "checked", required = false) int checked,@RequestParam(value = "username", required = false) String username ) {
         boolean views = false;
-        return ResponseEntity.ok(boardService.selectOneList(number, views, checked));
+        return ResponseEntity.ok(boardService.selectOneList(number, views, checked, username));
     }
     @PostMapping("/list")
     public void setList(@RequestBody InsertDto insertDto){

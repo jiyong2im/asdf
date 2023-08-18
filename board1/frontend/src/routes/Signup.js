@@ -22,7 +22,7 @@ function Signup() {
     await axios.post(`/signup`, formData).then((res) => {
       alert('등록되었습니다.');
       navigate('/list');
-    });
+    }).catch(()=>alert('아이디가 중복입니다'));
     // event.preventDefault();
     // console.log('Form submitted:', formData);
     // 여기서 서버로 데이터를 보내거나 다른 처리를 할 수 있습니다.

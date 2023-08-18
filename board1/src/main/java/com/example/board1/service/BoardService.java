@@ -14,62 +14,39 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BoardService {
     private final BoardDao boardDao;
     private final Logger LOGGER = LoggerFactory.getLogger(BoardService.class);
     private static final int paginationSize = 5;
-    private static final int listSize = 10;
+    private static final int listSize = 7 ;
 
     @Autowired
     public BoardService(BoardDao boardDao){
         this.boardDao = boardDao;
     }
 
-    public ArrayList<Pagination> pagination(Long numRecords, int pageNo) {
 
-        ArrayList<Pagination> pgnList = new ArrayList<>();
-
-        int numPages = (int)Math.ceil((double)numRecords / listSize);
-        int firstLink = ((pageNo - 1) / paginationSize) * paginationSize + 1;
-        int lastLink = firstLink + paginationSize - 1;
-        if (lastLink > numPages) {
-            lastLink = numPages;
-        }
-        if (firstLink > 1) {
-            pgnList.add(new Pagination("<<", firstLink - 1, false));
-        }
-
-        for (int i = firstLink; i <= lastLink; i++) {
-            pgnList.add(new Pagination("" + i, i, i == pageNo));
-        }
-
-        if (lastLink < numPages) {
-            pgnList.add(new Pagination(">>", lastLink + 1, false));
-        }
-        return pgnList;
-
-    }
 
     public Option selectList(int pageNo) {
         Long numRecords = boardDao.numRecodes();
 
         Page<BoardEntity> boardList= boardDao.selectListBoard(pageNo);
 
-        ArrayList<BoardDto> boardDtoList = new ArrayList<>();
-
         ArrayList<Pagination> pgnList  = pagination(numRecords, pageNo);
 
-        String str;
-        for(BoardEntity list :boardList) {
+        ArrayList<BoardDto> boardDtoList = boardList.stream().map(list -> {
+
             BoardDto dto = new BoardDto();
             dto.setName(list.getName());
             dto.setId(list.getId());
             dto.setTitle(list.getTitle());
             dto.setViews(list.getViews());
             dto.setText(list.getText());
-            str = (list.getCreatedAt().toString().replace("-", ":")
+            String str = (list.getCreatedAt().toString().replace("-", ":")
                     .replace("T","/").substring(5,16));
             dto.setCreatedAt(str);
             str = (list.getUpdatedAt().toString().replace("-", ":")
@@ -77,8 +54,8 @@ public class BoardService {
             dto.setUpdatedAt(str);
             dto.setNumber(list.getNumber());
 
-            boardDtoList.add(dto);
-        }
+            return dto;
+        }).collect(Collectors.toCollection(ArrayList::new));
 
         Option option = new Option();
         option.setDto(boardDtoList);
@@ -94,72 +71,35 @@ public class BoardService {
     }
     public ArrayList<BoardDto> selectSearchList(String word) {
         ArrayList<BoardEntity> boardList = boardDao.searchList(word);
-//        Page<BoardEntity> boardList= boardDao.selectListBoard(pageNo);
-        ArrayList<BoardDto> boardDtoList = new ArrayList<>();
 
-        String str;
 
-        for(BoardEntity list :boardList) {
+        ArrayList<BoardDto> boardDtoList = boardList.stream().map(list -> {
             BoardDto dto = new BoardDto();
             dto.setName(list.getName());
             dto.setId(list.getId());
             dto.setTitle(list.getTitle());
             dto.setViews(list.getViews());
             dto.setText(list.getText());
-            str = (list.getCreatedAt().toString().replace("-", ":")
-                    .replace("T","/").substring(5,16));
+            String str = (list.getCreatedAt().toString().replace("-", ":")
+                    .replace("T", "/").substring(5, 16));
             dto.setCreatedAt(str);
             str = (list.getUpdatedAt().toString().replace("-", ":")
-                    .replace("T","/").substring(5,16));
+                    .replace("T", "/").substring(5, 16));
             dto.setUpdatedAt(str);
             dto.setNumber(list.getNumber());
-
-            boardDtoList.add(dto);
-        }
-
-//        Option option =new Option();
-//        option.setDto(boardDtoList);
-//        option.setPgn(pgnList);
+            return dto;
+        }).collect(Collectors.toCollection(ArrayList::new));
 
         return boardDtoList;
     }
 
-
-
-//
-//    public ArrayList<Pagination> pagination(int pageNo) {
-//        ArrayList<Pagination> pgnList = new ArrayList<>();
-//
-//        Long numRecords = boardDao.numRecodes();
-//
-//        int numPages = (int)Math.ceil((double)numRecords / listSize);
-//        int firstLink = ((pageNo - 1) / paginationSize) * paginationSize + 1;
-//        int lastLink = firstLink + paginationSize - 1;
-//        if (lastLink > numPages) {
-//            lastLink = numPages;
-//        }
-//        if (firstLink > 1) {
-//            pgnList.add(new Pagination("이전", firstLink - 1, false));
-//        }
-//
-//        for (int i = firstLink; i <= lastLink; i++) {
-//            pgnList.add(new Pagination("" + i, i, i == pageNo));
-//        }
-//
-//        if (lastLink < numPages) {
-//            pgnList.add(new Pagination("다음", lastLink + 1, false));
-//        }
-//
-//        return pgnList;
-//    }
-    public InsertDto selectOneList(Long number, boolean views, int checked){
+    public InsertDto selectOneList(Long number, boolean views, int checked, String username){
         InsertDto insertDto;
-        insertDto = boardDao.selectOneBard(number, views, checked);
+        insertDto = boardDao.selectOneBard(number, views, checked, username);
         return insertDto;
     }
 
     public void writeService(InsertDto insertDto) {
-        //아이디 아직...
         BoardEntity boardEntity = new BoardEntity();
         boardEntity.setId(insertDto.getWriter());
         boardEntity.setText(insertDto.getContents());
@@ -179,6 +119,10 @@ public class BoardService {
 
     public void deleteService(Long number) {
         boardDao.deleteBoard(number);
+    }
+
+    public void deleteCommentService(Long number) {
+        boardDao.deleteCommentBoard(number);
     }
 
     public Option commentGetService(Long number, int pageNo){
@@ -208,21 +152,49 @@ public class BoardService {
 
         return option;
     }
+    public ArrayList<Pagination> pagination(Long numRecords, int pageNo) {
 
+        ArrayList<Pagination> pgnList = new ArrayList<>();
+
+        int numPages = (int)Math.ceil((double)numRecords / listSize);
+        int firstLink = ((pageNo - 1) / paginationSize) * paginationSize + 1;
+        int lastLink = firstLink + paginationSize - 1;
+        if (lastLink > numPages) {
+            lastLink = numPages;
+        }
+        if (firstLink > 1) {
+            pgnList.add(new Pagination("<<", firstLink - 1, false));
+        }
+
+        for (int i = firstLink; i <= lastLink; i++) {
+            pgnList.add(new Pagination("" + i, i, i == pageNo));
+        }
+
+        if (lastLink < numPages) {
+            pgnList.add(new Pagination(">>", lastLink + 1, false));
+        }
+        return pgnList;
+
+    }
     public void commentSaveService(CommentDto commentDto){
         boardDao.commentDao(commentDto);
     }
 }
 
-//        List<BoardDto> l = boardList.stream().map(d -> {
+
+
+//for(BoardEntity list :boardList) {
 //            BoardDto dto = new BoardDto();
-//            dto.setName(d.getName());
-//            dto.setId(d.getId());
-//            dto.setTitle(d.getTitle());
-//            dto.setViews(d.getViews());
-//            dto.setText(d.getText());
-//            dto.setCreatedAt(d.getCreatedAt());
-//            dto.setUpdatedAt(d.getUpdatedAt());
-//            dto.setNumber(d.getNumber());
-//            return dto;
-//        }).toList();
+//            dto.setName(list.getName());
+//            dto.setId(list.getId());
+//            dto.setTitle(list.getTitle());
+//            dto.setViews(list.getViews());
+//            dto.setText(list.getText());
+//            str = (list.getCreatedAt().toString().replace("-", ":").replace("T","/").substring(5,16));
+//            dto.setCreatedAt(str);
+//            str = (list.getUpdatedAt().toString().replace("-", ":").replace("T","/").substring(5,16));
+//            dto.setUpdatedAt(str);
+//            dto.setNumber(list.getNumber());
+//
+//            boardDtoList.add(dto);
+//        }

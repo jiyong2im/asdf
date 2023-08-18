@@ -9,7 +9,7 @@ const Header = () => {
     const [search, setSearch] = useState({
         word: '',
     });
-    const  word  = search.word; //비구조화 할당
+    const  word  = search.word;
 
     const logoutOnclick = async () => {
         await axios.get(`/logout`).then((res) => {
@@ -20,10 +20,13 @@ const Header = () => {
     };
     const onChange = (event) => {
         const { value, name } = event.target;
+        console.log(event.target);
         setSearch({
             ...search,
             [name]: value,
         });
+        console.log(search);
+
     };
     const getInfo = async () => {
              await axios.get(`/checkedLogin`).then((res) =>{
@@ -39,8 +42,8 @@ const Header = () => {
     }, [toggle]);
 
     const goToSearch = () => {
-        console.log('이것은 로구' + word);
-        console.log('이것은 로구' + search.word);
+        console.log('이것은 로구' );
+        console.log('goToSearch' + search.word);
         navigate('/search/' + word);
     };
 
@@ -48,13 +51,11 @@ const Header = () => {
 
         if(userInfo.username != null){
             return  <b>
-                        {userInfo.username}님     &nbsp;&nbsp;&nbsp;&nbsp;
-
-                <Link to="/logout" onClick={logoutOnclick}>로그아웃</Link>
+                        {userInfo.username}님&nbsp;&nbsp;&nbsp;&nbsp;
+                        <Link to="/logout" onClick={logoutOnclick}>로그아웃</Link>
                     </b>
         }
         return <Link to="/login">로그인</Link>
-
     }
 
     return (
@@ -66,16 +67,9 @@ const Header = () => {
             {checkLogin()}
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Link to="/signup">회원가입</Link>
-
-
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-
-            <input type="text" name="word" onChange={onChange} placeholder="검색" />
+            <input type="word" name="word" onChange={onChange} placeholder="검색" />
             <button onClick={goToSearch}>검색</button>
-
-
-
             <hr/>
         </header>
     );

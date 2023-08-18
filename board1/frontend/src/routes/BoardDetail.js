@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Link, useParams, useNavigate} from 'react-router-dom';
 import axios from 'axios';
-import Board from '../components/Board';
 import boardList from "./BoardList";
 
 const BoardDetail = () => {
@@ -51,14 +50,13 @@ const BoardDetail = () => {
                     alert('권한이 없습니다.');
                 }
         };
-        //useState() 를 먼저 적어 놨는데 안바뀐 상태로 api 요청하는지 모르겠다.
-    // board 테이블의 number랑 좋아요 싫어요 버튼을 맞춰서 조인해서 가는게 편할 듯 싶다.  userid, 테이블번호, 싫어요(널포함), 좋아요(널포함),
+
         const moveToGreat = async () => {
             if (Object.is(username, undefined)) {
                 alert('로그인이 필요합니다.');
             }else {
                 if(checked){
-                    axios.get(`/list/like/${number}?checked=1`).then((res) => {
+                    axios.get(`/list/like/${number}?checked=1&username=` + username).then((res) => {
                     setBoard(res.data);
                     setChecked(false);
                     });
@@ -74,7 +72,7 @@ const BoardDetail = () => {
             }else {
                 if(checked2) {
                         //${}리터럴 된 값 // 쓸 때 업데이트 됨
-                        axios.get(`/list/like/${number}?checked=2`).then((res) => {
+                        axios.get(`/list/like/${number}?checked=2&username=` + username).then((res) => {
                         setBoard(res.data);
                         setChecked2(false);
                     });
@@ -100,6 +98,16 @@ const BoardDetail = () => {
                 setChecked2(true);
             });
         };
+    const getComment = async (pgn =1) => {
+        await  axios.get(`/comment?number=` + number+`&pageNo=`+pgn)
+            .then((res) =>{
+                console.log('이것은 로구asdf' + res);
+                console.log('이것은 로구asdf' + res.data.dto);
+                setBoardPgn(res.data.pgn)
+                setCommentList(res.data.dto);
+                setPageNumber(pgn);
+            });
+    };
 
         useEffect(() => {
             getData();
@@ -131,16 +139,6 @@ const BoardDetail = () => {
         }
     };
 
-    const getComment = async (pgn =1) => {
-        await  axios.get(`/comment?number=` + number+`&pageNo=`+pgn)
-            .then((res) =>{
-                console.log('이것은 로구asdf' + res);
-                console.log('이것은 로구asdf' + res.data.dto);
-                setBoardPgn(res.data.pgn)
-                setCommentList(res.data.dto);
-                setPageNumber(pgn);
-            });
-    };
     const pagination = () => {
         var array =[]
         for(let i=0; i < boardPgn.length; i++){
@@ -155,7 +153,17 @@ const BoardDetail = () => {
     const movePagination =(pgn) => {
         getComment(pgn);
     }
-
+    const buttonClick =(com) =>{
+        if (Object.is(username, com.username)) {
+            axios.delete(`/comment?number=` + com.number).then((res) => {
+                alert('삭제되었습니다.');
+                getComment();
+                return <div></div>
+            });
+        }else {
+            alert('로그인 정보가 다릅니다.');
+        }
+    }
 
 
     return (
@@ -176,7 +184,6 @@ const BoardDetail = () => {
                 <button onClick={moveToGreat}>👍🏼{great}</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <button onClick={moveToHate}>👎🏾 {hate}</button>
-
                 <div>
                     <button onClick={moveToUpdate}>수정</button>
                     <button onClick={deleteBoard}>삭제</button>
@@ -189,8 +196,8 @@ const BoardDetail = () => {
                     <li>
                         {commentList && commentList.map((com) => (
                             <ul key={com.number}>
-                            <h3>{com.number},{com.username},{com.content} </h3>
-                            <hr/>
+                                <h3>{com.number},{com.username},{com.content} <button onClick={()=>buttonClick(com)}>X</button></h3>
+                                <hr/>
                             </ul>
 
                         ))}

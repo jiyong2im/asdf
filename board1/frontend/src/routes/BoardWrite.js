@@ -15,7 +15,7 @@ const BoardWrite = () => {
     const [userInfo, setUserInfo] = useState({});
 
 
-    const { title, writer, contents } = board; //비구조화 할당
+    const { title, writer, contents } = board;
 
 
     const onChange = (event) => {
@@ -42,9 +42,6 @@ const BoardWrite = () => {
             setUserInfo(res.data);
             console.log(res);
             console.log('성공');
-
-            // let dd = userInfo.username
-            // onChange(dd)
         });
     };
     const change = () => {

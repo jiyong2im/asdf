@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
@@ -10,8 +10,6 @@ function Login() {
         password:'',
     });
 
-
-
     const handleUsernameChange = (event) => {
         const { name, value } = event.target;
         setLogin({
@@ -19,12 +17,6 @@ function Login() {
             [name]: value,
         });
     };
-    //
-    //
-    // const handlePasswordChange = (event) => {
-    //     setPassword(event.target.value);
-    // };
-
 
     const handleSubmit = async () => {
         let form = new FormData();
@@ -32,10 +24,14 @@ function Login() {
         form.append("password",login.password);
 
         await axios.post(`/login`, form).then((res) => {
-            console.log('Form submitted:', form);
-            window.location.href='/home'
-            alert('로그인이 완료 되었습니다.');
-
+            console.log('Form submitted:', res);
+            if(Object.is(res.data ,undefined )){
+                console.log('dsadsa:', res.data);
+                alert('회원정보 불일치')
+            }else{
+                window.location.href='/home'
+                alert('로그인이 완료 되었습니다.');
+            }
         });
     };
 

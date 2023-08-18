@@ -24,20 +24,23 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
-        log.debug("uid: {}", uid);
+        LOGGER.info("loadUserByUsername: {}", uid);
         User user = userRepository.findByUid(uid);
         if(user ==null){
+            LOGGER.info("if(user ==null): {}", user);
+            LOGGER.info("if(user ==null): {}", uid);
+
             /*
             이때 프런트로 오류 보내야한다.
              */
-            throw new UsernameNotFoundException(uid);
+             throw new UsernameNotFoundException(uid);
+
         }
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUid())
                 .password(user.getPassword())
                 .roles(user.getRole().toString())
                 .build();
-
     }
 
     public User saveUser(User user){
