@@ -148,6 +148,26 @@ public class BoardDao {
     public void deleteCommentBoard(Long number) {
         commentRepository.deleteById(number);
     }
+
+    public void likeSave(String userName, Long boardId){
+        BoardEntity boardEntity = boardRepository.findById(boardId).get();
+        User user = userRepository.findByUid(userName);
+
+
+        if(likeRepository.existsByBoardNumberAndUserId(boardEntity, user)){
+            LikeEntity likeEntity= likeRepository.findByBoardNumberAndUserId(boardEntity,user);
+            boardEntity.setGreat(boardEntity.getGreat() - 1L);
+            likeRepository.deleteById(likeEntity.getNumber());
+            boardRepository.save(boardEntity);
+        }else {
+            boardEntity.setGreat(boardEntity.getGreat() + 1L );
+            boardRepository.save(boardEntity);
+            LikeEntity likeEntity = new LikeEntity();
+            likeEntity.setUserId(user);
+            likeEntity.setBoardNumber(boardEntity);
+            likeRepository.save(likeEntity);
+        }
+    }
 }
 
 

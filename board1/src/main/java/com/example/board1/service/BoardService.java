@@ -179,7 +179,13 @@ public class BoardService {
     public void commentSaveService(CommentDto commentDto){
         boardDao.commentSaveDao(commentDto);
     }
+
+    public void likeService(String userName, Long boardId){
+        boardDao.likeSave(userName, boardId);
+    }
 }
+
+
 
 
 

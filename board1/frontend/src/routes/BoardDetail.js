@@ -55,14 +55,13 @@ const BoardDetail = () => {
             if (Object.is(username, undefined)) {
                 alert('로그인이 필요합니다.');
             }else {
-                if(checked){
-                    axios.get(`/list/like/${number}?checked=1&username=` + username).then((res) => {
-                    setBoard(res.data);
-                    setChecked(false);
+
+                    axios.get(`/list/like/${number}?&username=` + username).then((res) => {
+                    // setBoard(res.data);
+                    // setChecked(false);
+                        getData(false);
                     });
-                }else {
-                    alert('1회 제한입니다.');
-                }
+
             }
         };
 
@@ -88,8 +87,8 @@ const BoardDetail = () => {
             navigate('/list');
         };
 
-        const getData = async () => {
-            axios.get(`/list/${number}?views=true`).then((res) => {
+        const getData = async (views = true) => {
+            axios.get(`/list/${number}?views=`+views).then((res) => {
                 setBoard(res.data);
                 console.log(writer);
                 console.log('dafasd' + writer);
@@ -181,9 +180,10 @@ const BoardDetail = () => {
                     <hr/>
                     <p>본문 : {contents}</p>
                 </div>
-                <button onClick={moveToGreat}>👍🏼{great}</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <button onClick={moveToHate}>👎🏾 {hate}</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+
+                <button onClick={moveToGreat}>👍🏼{great}</button>
                 <div>
                     <button onClick={moveToUpdate}>수정</button>
                     <button onClick={deleteBoard}>삭제</button>

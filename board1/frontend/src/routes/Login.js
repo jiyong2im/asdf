@@ -25,7 +25,9 @@ function Login() {
 
         await axios.post(`/login`, form).then((res) => {
             console.log('Form submitted:', res);
-            if(Object.is(res.data ,undefined )){
+            console.log('Form submitted:', res.data);
+
+            if(Object.is(res.data ,'' )){
                 console.log('dsadsa:', res.data);
                 alert('회원정보 불일치')
             }else{

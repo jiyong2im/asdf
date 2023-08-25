@@ -108,9 +108,11 @@ public class BoardController {
     }
 
     @GetMapping("/list/like/{number}")
-    public ResponseEntity<InsertDto> requestBoardLike(@PathVariable("number") Long number, @RequestParam(value = "checked", required = false) int checked,@RequestParam(value = "username", required = false) String username ) {
-        boolean views = false;
-        return ResponseEntity.ok(boardService.selectOneList(number, views, checked, username));
+    public void requestBoardLike(@PathVariable("number") Long number,@RequestParam(value = "username", required = false) String username ) {
+//        boolean views = false;
+        boardService.likeService(username,number);
+        // true false 만 리턴 필
+//        return ResponseEntity.ok(boardService.selectOneList(number, views, checked, username));
     }
     @PostMapping("/list")
     public void setList(@RequestBody InsertDto insertDto){

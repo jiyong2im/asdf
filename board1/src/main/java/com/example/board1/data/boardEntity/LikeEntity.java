@@ -8,24 +8,20 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "likeandhate")
+@Table(name = "great")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class LikeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long number;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "user_id")
     private User userId;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "board_number")
     private BoardEntity boardNumber;
 
-    private boolean checkLikePush;
-    private boolean checkHatePush;
 }
